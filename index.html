@@ -252,86 +252,76 @@
         }
 
         /* Decorative Japanese text */
+        /* Refined vertical text - vintage Japanese typography */
         .hero-kanji {
             position: absolute;
             right: var(--space-md);
-            bottom: var(--space-md);
+            top: 50%;
+            transform: translateY(-50%);
             font-family: var(--font-jp);
-            font-size: clamp(4rem, 12vw, 10rem);
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-weight: 300;
             color: white;
-            opacity: 0.08;
+            opacity: 0.5;
             writing-mode: vertical-rl;
+            letter-spacing: 0.5em;
             line-height: 1;
             pointer-events: none;
         }
 
-        /* Decorative floating kanji over hero */
-        .hero-floating-kanji {
+        /* Hanko seal stamp */
+        .hero-hanko {
             position: absolute;
-            font-family: var(--font-jp);
-            color: white;
-            pointer-events: none;
+            bottom: var(--space-lg);
+            right: var(--space-lg);
+            width: clamp(50px, 8vw, 80px);
+            height: clamp(50px, 8vw, 80px);
+            border: 2px solid var(--color-vermillion);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             opacity: 0;
-            animation: floatIn 1.5s var(--ease-out-expo) forwards;
+            animation: sealReveal 1s var(--ease-out-expo) forwards 1.2s;
         }
 
-        .hero-floating-kanji.k1 {
-            top: 15%;
-            left: 10%;
-            font-size: clamp(3rem, 8vw, 6rem);
-            opacity: 0.06;
-            animation-delay: 0.8s;
-        }
-
-        .hero-floating-kanji.k2 {
-            top: 40%;
-            right: 15%;
-            font-size: clamp(2rem, 5vw, 4rem);
-            opacity: 0.04;
-            animation-delay: 1s;
-        }
-
-        .hero-floating-kanji.k3 {
-            bottom: 30%;
-            left: 20%;
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            opacity: 0.05;
-            animation-delay: 1.2s;
-        }
-
-        .hero-floating-kanji.k4 {
-            top: 25%;
-            right: 30%;
-            font-size: clamp(1.5rem, 4vw, 3rem);
-            opacity: 0.03;
-            animation-delay: 1.4s;
+        .hero-hanko span {
+            font-family: var(--font-jp);
+            font-size: clamp(1.25rem, 3vw, 2rem);
+            font-weight: 600;
+            color: var(--color-vermillion);
             writing-mode: vertical-rl;
+            letter-spacing: 0.1em;
         }
 
-        .hero-floating-kanji.k5 {
-            bottom: 45%;
-            right: 8%;
-            font-size: clamp(2rem, 5vw, 4rem);
-            opacity: 0.05;
-            animation-delay: 1.1s;
-        }
-
-        @keyframes floatIn {
+        @keyframes sealReveal {
             0% {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: scale(0.8) rotate(-5deg);
             }
             100% {
-                opacity: var(--target-opacity, 0.05);
-                transform: translateY(0);
+                opacity: 0.85;
+                transform: scale(1) rotate(0deg);
             }
         }
 
-        .hero-floating-kanji.k1 { --target-opacity: 0.06; }
-        .hero-floating-kanji.k2 { --target-opacity: 0.04; }
-        .hero-floating-kanji.k3 { --target-opacity: 0.05; }
-        .hero-floating-kanji.k4 { --target-opacity: 0.03; }
-        .hero-floating-kanji.k5 { --target-opacity: 0.05; }
+        /* Subtle era marking */
+        .hero-era-mark {
+            position: absolute;
+            top: var(--space-lg);
+            right: var(--space-lg);
+            font-family: var(--font-jp);
+            font-size: 0.6875rem;
+            letter-spacing: 0.3em;
+            color: white;
+            opacity: 0;
+            writing-mode: vertical-rl;
+            animation: fadeIn 1s var(--ease-out-expo) forwards 1s;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 0.4; }
+        }
 
         @keyframes revealUp {
             to {
@@ -438,7 +428,30 @@
         /* Section containers inherit accent color */
         .postcard-section {
             --section-accent: var(--color-vermillion);
+            --section-accent-rgb: 199, 62, 29;
             margin-bottom: var(--space-xl);
+            padding: var(--space-lg);
+            margin-left: calc(-1 * var(--space-lg));
+            margin-right: calc(-1 * var(--space-lg));
+            background: linear-gradient(
+                135deg,
+                rgba(var(--section-accent-rgb), 0.06) 0%,
+                rgba(var(--section-accent-rgb), 0.02) 50%,
+                transparent 100%
+            );
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .postcard-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--section-accent), transparent 70%);
+            opacity: 0.6;
         }
 
         .postcard-section .japanese-text {
@@ -994,13 +1007,10 @@
                 <img src="IMG_3962.jpeg" alt="Vintage Japanese illustration" class="hero-image">
                 <div class="hero-image-overlay"></div>
             </div>
-            <!-- Floating decorative kanji -->
-            <span class="hero-floating-kanji k1">郵便</span>
-            <span class="hero-floating-kanji k2">昭和</span>
-            <span class="hero-floating-kanji k3">想</span>
-            <span class="hero-floating-kanji k4">心</span>
-            <span class="hero-floating-kanji k5">縁</span>
-            <div class="hero-kanji">手紙</div>
+            <!-- Refined vintage Japanese typography -->
+            <div class="hero-era-mark">昭和時代</div>
+            <div class="hero-kanji">郵便葉書</div>
+            <div class="hero-hanko"><span>手紙</span></div>
         </div>
     </section>
 
@@ -1963,23 +1973,30 @@
                     g = Math.round(g / count);
                     b = Math.round(b / count);
 
-                    // Boost saturation slightly for more vibrant accents
+                    // Boost saturation for more visible accents
                     const max = Math.max(r, g, b);
                     const min = Math.min(r, g, b);
                     const sat = max > 0 ? (max - min) / max : 0;
 
                     if (sat < 0.3) {
-                        // Desaturated - use a warm brown/sepia tone
-                        callback(`rgb(${Math.min(r + 40, 255)}, ${g}, ${Math.max(b - 20, 0)})`);
-                    } else {
-                        callback(`rgb(${r}, ${g}, ${b})`);
+                        // Desaturated - boost the dominant channel
+                        if (r >= g && r >= b) {
+                            r = Math.min(r + 60, 255);
+                            b = Math.max(b - 30, 0);
+                        } else if (g >= r && g >= b) {
+                            g = Math.min(g + 40, 255);
+                        } else {
+                            b = Math.min(b + 40, 255);
+                        }
                     }
+
+                    callback({ r, g, b });
                 } else {
-                    callback('var(--color-vermillion)');
+                    callback({ r: 199, g: 62, b: 29 }); // Vermillion fallback
                 }
             };
             img.onerror = function() {
-                callback('var(--color-vermillion)');
+                callback({ r: 199, g: 62, b: 29 }); // Vermillion fallback
             };
             img.src = imgSrc;
         }
@@ -1997,8 +2014,9 @@
         document.querySelectorAll('.postcard-section').forEach((section) => {
             const sectionIndex = parseInt(section.dataset.section);
             if (sectionImages[sectionIndex]) {
-                extractDominantColor(sectionImages[sectionIndex], (color) => {
-                    section.style.setProperty('--section-accent', color);
+                extractDominantColor(sectionImages[sectionIndex], ({ r, g, b }) => {
+                    section.style.setProperty('--section-accent', `rgb(${r}, ${g}, ${b})`);
+                    section.style.setProperty('--section-accent-rgb', `${r}, ${g}, ${b}`);
                 });
             }
         });
