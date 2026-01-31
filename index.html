@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Postcard Collection | Showa Era Letters</title>
+
+    <!-- Distinctive Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+JP:wght@300;400;500;600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-ink: #0f0f0f;
+            --color-ink-soft: #2a2a2a;
+            --color-paper: #f7f4ef;
+            --color-paper-aged: #ebe6dc;
+            --color-vermillion: #c73e1d;
+            --color-gold: #b8956e;
+            --color-gold-dark: #8a6d4a;
+            --color-sage: #5c6b5e;
+            --color-mist: rgba(15, 15, 15, 0.04);
+
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Instrument Sans', -apple-system, sans-serif;
+            --font-jp: 'Noto Serif JP', 'Yu Mincho', serif;
+
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --space-xl: 8rem;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-paper);
+            color: var(--color-ink);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Scroll Progress - thin red line like a hanko stamp */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--color-vermillion);
+            z-index: 1001;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            color: white;
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            text-decoration: none;
+        }
+
+        .nav-counter {
+            color: white;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        /* Hero Section - Immersive with the illustration */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-xl) var(--space-lg);
+            padding-top: calc(var(--space-xl) + 4rem);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-body);
+            font-size: 0.6875rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--color-vermillion);
+            margin-bottom: var(--space-md);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealUp 1s var(--ease-out-expo) forwards 0.3s;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            margin-bottom: var(--space-md);
+            opacity: 0;
+            transform: translateY(40px);
+            animation: revealUp 1.2s var(--ease-out-expo) forwards 0.5s;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--color-gold-dark);
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            line-height: 1.9;
+            color: var(--color-ink-soft);
+            max-width: 440px;
+            margin-bottom: var(--space-lg);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealUp 1s var(--ease-out-expo) forwards 0.7s;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: var(--space-lg);
+            opacity: 0;
+            animation: revealUp 1s var(--ease-out-expo) forwards 0.9s;
+        }
+
+        .meta-block {
+            position: relative;
+            padding-left: 1rem;
+        }
+
+        .meta-block::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.25rem;
+            bottom: 0.25rem;
+            width: 2px;
+            background: var(--color-vermillion);
+        }
+
+        .meta-label {
+            font-size: 0.625rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-gold-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .meta-value {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
+        /* Hero Image Side */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-ink);
+            overflow: hidden;
+        }
+
+        .hero-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform: scale(1.1);
+            opacity: 0;
+            animation: heroImageReveal 1.8s var(--ease-out-expo) forwards 0.2s;
+        }
+
+        @keyframes heroImageReveal {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: saturate(1.1) contrast(1.05);
+        }
+
+        .hero-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(15, 15, 15, 0.2) 0%,
+                transparent 50%,
+                rgba(199, 62, 29, 0.1) 100%
+            );
+            pointer-events: none;
+        }
+
+        /* Decorative Japanese text */
+        .hero-kanji {
+            position: absolute;
+            right: var(--space-md);
+            bottom: var(--space-md);
+            font-family: var(--font-jp);
+            font-size: clamp(4rem, 12vw, 10rem);
+            color: white;
+            opacity: 0.08;
+            writing-mode: vertical-rl;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        @keyframes revealUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: var(--space-md);
+            left: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.6875rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--color-ink-soft);
+            opacity: 0;
+            animation: revealUp 1s var(--ease-out-expo) forwards 1.2s;
+        }
+
+        .scroll-line {
+            width: 40px;
+            height: 1px;
+            background: var(--color-ink);
+            transform-origin: left;
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleX(1); opacity: 1; }
+            50% { transform: scaleX(0.6); opacity: 0.5; }
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-lg);
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--color-mist);
+        }
+
+        .section-number {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: var(--color-paper-aged);
+            -webkit-text-stroke: 1px var(--color-ink);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        .section-count {
+            font-size: 0.6875rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--color-gold-dark);
+        }
+
+        /* Postcard Cards */
+        .postcard {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            padding-bottom: var(--space-xl);
+            position: relative;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+        }
+
+        .postcard.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .postcard::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--color-ink), transparent);
+            opacity: 0.1;
+        }
+
+        .postcard:last-child::after {
+            display: none;
+        }
+
+        /* Alternate layout for every other card */
+        .postcard:nth-child(even) {
+            grid-template-columns: 1fr 1.15fr;
+        }
+
+        .postcard:nth-child(even) .postcard-image {
+            order: 2;
+        }
+
+        .postcard:nth-child(even) .postcard-content {
+            order: 1;
+            text-align: right;
+        }
+
+        .postcard:nth-child(even) .postcard-content .japanese-text {
+            border-left: none;
+            border-right: 2px solid var(--color-vermillion);
+        }
+
+        .postcard:nth-child(even) .postcard-content .english-text {
+            border-left: none;
+            border-right: 1px solid var(--color-paper-aged);
+            padding-left: 0;
+            padding-right: 1.5rem;
+        }
+
+        /* Image Container */
+        .postcard-image {
+            position: relative;
+        }
+
+        .image-frame {
+            position: relative;
+            background: var(--color-paper-aged);
+            padding: 1rem;
+            box-shadow:
+                0 2px 4px rgba(0,0,0,0.02),
+                0 8px 24px rgba(0,0,0,0.04),
+                0 24px 48px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: transform 0.6s var(--ease-out-expo), box-shadow 0.6s var(--ease-out-expo);
+        }
+
+        .image-frame:hover {
+            transform: translateY(-8px) rotate(-0.5deg);
+            box-shadow:
+                0 4px 8px rgba(0,0,0,0.02),
+                0 16px 32px rgba(0,0,0,0.06),
+                0 32px 64px rgba(0,0,0,0.08);
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+            image-orientation: from-image;
+        }
+
+        .image-number {
+            position: absolute;
+            top: -0.75rem;
+            left: 1.5rem;
+            background: var(--color-ink);
+            color: var(--color-paper);
+            padding: 0.375rem 0.875rem;
+            font-size: 0.625rem;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+        }
+
+        .image-type {
+            position: absolute;
+            bottom: -0.5rem;
+            right: 1.5rem;
+            background: var(--color-vermillion);
+            color: white;
+            padding: 0.375rem 0.875rem;
+            font-size: 0.5625rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .image-type.military {
+            background: var(--color-sage);
+        }
+
+        /* Content Side */
+        .postcard-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-md) 0;
+        }
+
+        .content-era {
+            font-size: 0.625rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-gold-dark);
+            margin-bottom: var(--space-sm);
+        }
+
+        .content-title {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 500;
+            margin-bottom: var(--space-md);
+            line-height: 1.3;
+        }
+
+        .translation-block {
+            margin-bottom: var(--space-md);
+        }
+
+        .translation-label {
+            font-size: 0.5625rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-gold-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .japanese-text {
+            font-family: var(--font-jp);
+            font-size: 0.9375rem;
+            line-height: 2.2;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border-left: 2px solid var(--color-vermillion);
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .english-text {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-style: italic;
+            line-height: 1.9;
+            color: var(--color-ink-soft);
+            padding-left: 1.5rem;
+            border-left: 1px solid var(--color-paper-aged);
+        }
+
+        .context-note {
+            margin-top: var(--space-md);
+            padding: 1.25rem 1.5rem;
+            background: var(--color-paper-aged);
+            font-size: 0.8125rem;
+            line-height: 1.8;
+            color: var(--color-ink-soft);
+            position: relative;
+        }
+
+        .context-note::before {
+            content: '註';
+            position: absolute;
+            top: -0.5rem;
+            left: 1rem;
+            font-family: var(--font-jp);
+            font-size: 0.75rem;
+            background: var(--color-vermillion);
+            color: white;
+            padding: 0.125rem 0.5rem;
+        }
+
+        .context-note strong {
+            color: var(--color-ink);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--color-ink);
+            color: var(--color-paper);
+            padding: var(--space-lg);
+            margin-top: var(--space-xl);
+        }
+
+        .footer-inner {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: var(--space-lg);
+        }
+
+        .footer-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-subtitle {
+            font-size: 0.8125rem;
+            opacity: 0.6;
+        }
+
+        .footer-kanji {
+            font-family: var(--font-jp);
+            font-size: 4rem;
+            opacity: 0.15;
+            line-height: 1;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 15, 15, 0.97);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s var(--ease-out-expo);
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            transform: scale(0.9);
+            transition: transform 0.5s var(--ease-out-expo);
+        }
+
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            box-shadow: 0 32px 64px rgba(0,0,0,0.4);
+            image-orientation: from-image;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -3rem;
+            right: 0;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .lightbox-close:hover {
+            color: white;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.25rem;
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .lightbox-prev { left: -5rem; }
+        .lightbox-next { right: -5rem; }
+
+        .lightbox-counter {
+            position: absolute;
+            bottom: -2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.4);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .hero-content {
+                padding: calc(var(--space-xl) + 3rem) var(--space-md) var(--space-lg);
+            }
+
+            .hero-visual {
+                height: 60vh;
+            }
+
+            .postcard,
+            .postcard:nth-child(even) {
+                grid-template-columns: 1fr;
+            }
+
+            .postcard:nth-child(even) .postcard-image,
+            .postcard:nth-child(even) .postcard-content {
+                order: unset;
+                text-align: left;
+            }
+
+            .postcard:nth-child(even) .postcard-content .japanese-text {
+                border-right: none;
+                border-left: 2px solid var(--color-vermillion);
+            }
+
+            .postcard:nth-child(even) .postcard-content .english-text {
+                border-right: none;
+                border-left: 1px solid var(--color-paper-aged);
+                padding-right: 0;
+                padding-left: 1.5rem;
+            }
+
+            .lightbox-prev { left: 1rem; }
+            .lightbox-next { right: 1rem; }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .hero-content {
+                padding: calc(var(--space-lg) + 3rem) var(--space-sm) var(--space-md);
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+
+            .hero-visual {
+                height: 50vh;
+            }
+
+            .main-content {
+                padding: var(--space-lg) var(--space-sm);
+            }
+
+            .section-header {
+                grid-template-columns: auto 1fr;
+            }
+
+            .section-count {
+                display: none;
+            }
+
+            .postcard {
+                margin-bottom: var(--space-lg);
+                padding-bottom: var(--space-lg);
+            }
+
+            .image-frame {
+                padding: 0.75rem;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-kanji {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .content-title {
+                font-size: 1.375rem;
+            }
+
+            .japanese-text {
+                padding: 1rem;
+                font-size: 0.875rem;
+            }
+
+            .english-text {
+                font-size: 0.9375rem;
+                padding-left: 1rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            .postcard {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <nav>
+        <a href="#" class="nav-logo">Japanese Postcards</a>
+        <span class="nav-counter">23 Letters</span>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-eyebrow">Showa Era Collection</div>
+            <h1 class="hero-title">Letters Across<br><em>Time & Distance</em></h1>
+            <p class="hero-subtitle">A collection of 23 Japanese postcards from the 1930s-1950s, chronicling correspondence between families separated by war, distance, and circumstance. Written in classical cursive script, these cards reveal the intimate thoughts of ordinary people during extraordinary times.</p>
+            <div class="hero-meta">
+                <div class="meta-block">
+                    <div class="meta-label">Period</div>
+                    <div class="meta-value">1930s - 1950s</div>
+                </div>
+                <div class="meta-block">
+                    <div class="meta-label">Script</div>
+                    <div class="meta-value">Sosho Cursive</div>
+                </div>
+                <div class="meta-block">
+                    <div class="meta-label">Origin</div>
+                    <div class="meta-value">Niigata Prefecture</div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <span class="scroll-line"></span>
+                <span>Scroll to explore</span>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-image-container">
+                <img src="IMG_3962.jpeg" alt="Vintage Japanese illustration" class="hero-image">
+                <div class="hero-image-overlay"></div>
+            </div>
+            <div class="hero-kanji">手紙</div>
+        </div>
+    </section>
+
+    <main class="main-content">
+
+        <!-- SECTION 1: Military Correspondence -->
+        <div class="section-header">
+            <span class="section-number">01</span>
+            <h2 class="section-title">Military Correspondence</h2>
+            <span class="section-count">5 Letters</span>
+        </div>
+
+        <!-- Postcard 1 -->
+        <article class="postcard" data-index="0">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(0)">
+                    <span class="image-number">01 / 23</span>
+                    <img src="IMG_3950.JPG" alt="Military Mail Format">
+                    <span class="image-type military">Military Mail</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Wartime Format</div>
+                <h3 class="content-title">Standard Military Postcard</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Card Header</div>
+                    <div class="japanese-text">
+                        郵便はがき (Yubin Hagaki)<br>
+                        軍事郵便 (Gunji Yubin)<br>
+                        檢閲濟 (Ken'etsu Zumi)
+                    </div>
+                    <div class="english-text">
+                        "Postal Card" — "Military Mail" — "Censorship Completed"<br><br>
+                        This empty censorship box would be stamped after military censors reviewed the contents. Any sensitive information would result in the card being confiscated.
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Historical Context:</strong> This blank military postcard shows the standard wartime format with Admiral Togo's portrait stamp, the "Military Mail" designation, and the censorship verification box. All soldier correspondence was reviewed to prevent sensitive information from reaching the enemy.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 2 -->
+        <article class="postcard" data-index="1">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(1)">
+                    <span class="image-number">02 / 23</span>
+                    <img src="IMG_3939.JPG" alt="Military Training Letter">
+                    <span class="image-type military">Military Mail</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Wartime</div>
+                <h3 class="content-title">Letter from Training</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Full Message</div>
+                    <div class="japanese-text">
+                        謹啓<br>
+                        益々御清栄の段大慶に存じます。小生も此方にて元気に勤務しております。毎日訓練に励んでおりますが、皆様のご健康をお祈り申し上げます。内地の様子はいかがでしょうか。此方は寒さも厳しくなってまいりましたが、身体には気をつけて頑張っております。季節柄お身体ご自愛ください。<br>
+                        敬具
+                    </div>
+                    <div class="english-text">
+                        "Most Respectfully,<br><br>
+                        I am greatly pleased to hear of your continued prosperity. I too am serving here in good spirits, devoting myself to training every day. I pray for everyone's good health at home.<br><br>
+                        How are things in the homeland? The cold here has become severe, but I am taking care of my health and doing my best. Please take care of yourself.<br><br>
+                        Respectfully yours"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> The soldier uses reassuring language typical of military correspondence. The term "naichi" (homeland) was commonly used by soldiers abroad to refer to mainland Japan. The distinctive dove stamp symbolizes peace—an ironic choice for wartime mail.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 3 -->
+        <article class="postcard" data-index="2">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(2)">
+                    <span class="image-number">03 / 23</span>
+                    <img src="IMG_3936.JPG" alt="Army Hospital Card">
+                    <span class="image-type military">Army Hospital</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Wartime</div>
+                <h3 class="content-title">From the Army Hospital</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Recipient</div>
+                    <div class="japanese-text">
+                        新潟縣北蒲原郡笹神村<br>
+                        字川口四〇四番地<br>
+                        渡邊一太郎 殿
+                    </div>
+                    <div class="english-text">
+                        To: Mr. Watanabe Ichitaro<br>
+                        404 Kawaguchi, Sasagami Village<br>
+                        Kita-Kanbara District, Niigata Prefecture
+                    </div>
+                </div>
+                <div class="translation-block">
+                    <div class="translation-label">Sender</div>
+                    <div class="japanese-text">
+                        新潟縣北蒲原郡笹神村字博田<br>
+                        陸軍病院ニテ療養中<br>
+                        渡邊作兵衛
+                    </div>
+                    <div class="english-text">
+                        From: Watanabe Sakubei<br>
+                        Currently convalescing at Army Hospital<br>
+                        Hakuda, Sasagami Village
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> A poignant card from an injured soldier at an Army Hospital. The shared Watanabe surname suggests they are relatives—likely father and son, or brothers. This begins the Niigata family correspondence that threads through the collection.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 4 -->
+        <article class="postcard" data-index="3">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(3)">
+                    <span class="image-number">04 / 23</span>
+                    <img src="IMG_3945.JPG" alt="Continental Operations">
+                    <span class="image-type military">Continental Front</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Wartime</div>
+                <h3 class="content-title">From the Continental Front</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Recipient</div>
+                    <div class="japanese-text">
+                        愛知縣名古屋市中區<br>
+                        榮町飲食店「丸屋」<br>
+                        山田花子 様方
+                    </div>
+                    <div class="english-text">
+                        To: Care of Miss Yamada Hanako<br>
+                        "Maruya" Restaurant, Sakae-machi<br>
+                        Nagoya City, Aichi Prefecture
+                    </div>
+                </div>
+                <div class="translation-block">
+                    <div class="translation-label">Sender</div>
+                    <div class="japanese-text">
+                        大陸派遣軍<br>
+                        陸軍軍曹　佐藤武雄<br>
+                        野戰郵便局気付
+                    </div>
+                    <div class="english-text">
+                        From: Army Sergeant Sato Takeo<br>
+                        Continental Expeditionary Force<br>
+                        c/o Field Post Office
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> From a soldier in the "Continental Expeditionary Force"—troops deployed to China during the Second Sino-Japanese War (1937-1945). The recipient works at a Nagoya restaurant, possibly a sweetheart or family friend.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 5 -->
+        <article class="postcard" data-index="4">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(4)">
+                    <span class="image-number">05 / 23</span>
+                    <img src="IMG_3952.JPG" alt="Fire Disaster Report">
+                    <span class="image-type military">Ehime Division</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Wartime</div>
+                <h3 class="content-title">News of Fire Disaster</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Message</div>
+                    <div class="japanese-text">
+                        火災ニ付キ御報告申上候<br>
+                        去ル十五日夜半、隣家ヨリ出火<br>
+                        幸ヒニシテ当家ハ類焼ヲ免レ候<br>
+                        御安心被下度候
+                    </div>
+                    <div class="english-text">
+                        "I am reporting regarding the fire disaster. On the night of the 15th, a fire broke out from the neighboring house. Fortunately, our house escaped the spreading flames. Please be at ease."
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> A rare card carrying difficult news from home. While soldiers were told to stay focused, families faced their own hardships. The writer reassures their soldier that despite the fire, the family home survived.
+                </div>
+            </div>
+        </article>
+
+        <!-- SECTION 2: Niigata Family -->
+        <div class="section-header">
+            <span class="section-number">02</span>
+            <h2 class="section-title">Niigata Family Letters</h2>
+            <span class="section-count">4 Letters</span>
+        </div>
+
+        <!-- Postcard 6 -->
+        <article class="postcard" data-index="5">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(5)">
+                    <span class="image-number">06 / 23</span>
+                    <img src="IMG_3937.JPG" alt="Niigata Address">
+                    <span class="image-type">Address Card</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">The Watanabe Family</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Correspondence Details</div>
+                    <div class="japanese-text">
+                        新潟縣北蒲原郡笹神村<br>
+                        字八四川十里<br>
+                        渡邊巳城 様<br><br>
+                        差出人：高等科一年　渡邊作兵衛
+                    </div>
+                    <div class="english-text">
+                        To: Mr. Watanabe Mishiro<br>
+                        84 Kawajuri, Sasagami Village<br><br>
+                        From: Watanabe Sakubei<br>
+                        First Year, Higher Elementary School
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> The sender identifies as a Higher Elementary student (ages 12-14). This may be the same Sakubei who later appears as an Army Hospital patient—showing a life trajectory from student to soldier.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 7 -->
+        <article class="postcard" data-index="6">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(6)">
+                    <span class="image-number">07 / 23</span>
+                    <img src="IMG_3949.JPG" alt="Niigata Address 2">
+                    <span class="image-type">Address Card</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">District Correspondence</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Addresses</div>
+                    <div class="japanese-text">
+                        新潟縣北蒲原郡笹神村<br>
+                        字八女川十六番地<br>
+                        渡邊府六 様<br><br>
+                        三十區　渡邊白政より
+                    </div>
+                    <div class="english-text">
+                        To: Mr. Watanabe Furoku<br>
+                        16 Yamekawa, Sasagami Village<br><br>
+                        From: Watanabe Shiromasa, District 30
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> The district numbering (District 30) was a wartime administrative system used for civil defense and rationing. The faded ink and worn edges reveal decades of handling.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 8 -->
+        <article class="postcard" data-index="7">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(7)">
+                    <span class="image-number">08 / 23</span>
+                    <img src="IMG_3951.JPG" alt="Urgent Summons">
+                    <span class="image-type">Urgent</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">Urgent Summons</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Message</div>
+                    <div class="japanese-text">
+                        渡邊叶 様<br><br>
+                        用件ニ付キ至急御來訪願上候<br>
+                        龍太郎より
+                    </div>
+                    <div class="english-text">
+                        To: Mr. Watanabe Kano<br><br>
+                        "Regarding an urgent matter, I humbly request that you come visit at your earliest convenience."<br><br>
+                        From Ryutaro
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> Features a prominent red seal authenticating the sender. The urgent summons for a personal visit suggests something too important for written discussion—perhaps a family emergency or critical decision.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 9 -->
+        <article class="postcard" data-index="8">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(8)">
+                    <span class="image-number">09 / 23</span>
+                    <img src="IMG_3953.JPG" alt="Rice Planting">
+                    <span class="image-type">Family</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">Rice Planting Consultation</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Message</div>
+                    <div class="japanese-text">
+                        渡邊又四郎 様<br><br>
+                        御無沙汰致居候處<br>
+                        先般ノ田植ノ儀ニ付キ<br>
+                        御相談申上度候間<br>
+                        来ル日曜日御来訪願上候<br><br>
+                        渡邊信仲
+                    </div>
+                    <div class="english-text">
+                        To: Mr. Watanabe Matashiro<br><br>
+                        "I apologize for my long silence. Regarding the matter of the recent rice planting, I wish to consult with you. I humbly request that you visit this coming Sunday."<br><br>
+                        From: Watanabe Shinnaka
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> Rice planting (taue) was the most important agricultural event in rural Japan, requiring coordination between extended family and neighbors. The distinctive red seal authenticates this family correspondence.
+                </div>
+            </div>
+        </article>
+
+        <!-- SECTION 3: Seasonal -->
+        <div class="section-header">
+            <span class="section-number">03</span>
+            <h2 class="section-title">Seasonal Greetings</h2>
+            <span class="section-count">6 Letters</span>
+        </div>
+
+        <!-- Postcard 10 -->
+        <article class="postcard" data-index="9">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(9)">
+                    <span class="image-number">10 / 23</span>
+                    <img src="IMG_3934.JPG" alt="New Year Card">
+                    <span class="image-type">Nengajo</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">New Year 1940</div>
+                <h3 class="content-title">New Year's Greeting</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Greeting</div>
+                    <div class="japanese-text">
+                        謹賀新年<br><br>
+                        旧年中ハ格別ノ御厚情ヲ賜リ<br>
+                        誠ニ有難ク厚ク御禮申上候<br>
+                        本年モ相變ラズ<br>
+                        御指導御鞭撻ノ程<br>
+                        宜シク御願申上候<br><br>
+                        昭和十五年元旦<br>
+                        横濱市　山本太郎
+                    </div>
+                    <div class="english-text">
+                        "Respectful New Year Greetings<br><br>
+                        For the special kindness you showed me during the past year, I express my sincere and deep gratitude. This year as well, I humbly request your continued guidance.<br><br>
+                        New Year's Day, Showa 15 (1940)<br>
+                        Yamamoto Taro, Yokohama City"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Cultural Note:</strong> Nengajo are essential to Japanese tradition—millions are sent to arrive precisely on January 1st. The zodiac stamp represents the Year of the Dragon (1940).
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 11 -->
+        <article class="postcard" data-index="10">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(10)">
+                    <span class="image-number">11 / 23</span>
+                    <img src="IMG_3944.JPG" alt="Spring Moving">
+                    <span class="image-type">Spring</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Spring</div>
+                <h3 class="content-title">Change of Address</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Announcement</div>
+                    <div class="japanese-text">
+                        謹啓<br>
+                        春暖ノ候、益々御清榮ノコトト御慶ビ申上候。<br><br>
+                        此度左記ノ通リ轉居仕候間、御通知申上候。今後トモ變ラヌ御交誼ノ程、宜シク御願申上候。<br><br>
+                        新住所：東京市杉並區高圓寺北町三丁目十二番地
+                    </div>
+                    <div class="english-text">
+                        "Most Respectfully,<br><br>
+                        In this season of spring warmth, I am pleased to hear of your continued prosperity. I am writing to inform you that I have moved to the address below. I humbly request your continued friendship.<br><br>
+                        New Address: 12 Kita-machi 3-chome, Koenji, Suginami, Tokyo"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> A formal change-of-address notice sent during spring. Such notifications were essential social courtesies—failing to inform acquaintances of a move was considered rude.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 12 -->
+        <article class="postcard" data-index="11">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(11)">
+                    <span class="image-number">12 / 23</span>
+                    <img src="IMG_3941.JPG" alt="Summer Heat">
+                    <span class="image-type">Summer</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Midsummer</div>
+                <h3 class="content-title">Summer Inquiry</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Letter</div>
+                    <div class="japanese-text">
+                        拝啓<br>
+                        酷暑ノ候、皆様ニハ益々御健勝ノコトト御慶ビ申上候。<br><br>
+                        先日御話シ致候件、目下検討中ニ御座候。結果ガ出マシタラ直グニ御連絡致候。<br><br>
+                        暑サ厳シキ折、御身體御自愛下サレ度御願申上候。<br>
+                        敬具
+                    </div>
+                    <div class="english-text">
+                        "Dear Sir,<br><br>
+                        In this season of severe heat, I am pleased to hear of everyone's continued good health.<br><br>
+                        Regarding the matter we discussed, I am currently considering it. I will contact you immediately when I reach a conclusion.<br><br>
+                        In this severe heat, I pray you take care of yourself.<br>
+                        Respectfully yours"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> "Kokusho no kou" (season of severe heat) places this in peak summer—late July to mid-August. The seasonal reference expressed genuine concern for the recipient's wellbeing.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 13 -->
+        <article class="postcard" data-index="12">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(12)">
+                    <span class="image-number">13 / 23</span>
+                    <img src="IMG_3954.JPG" alt="Letter from Osaka">
+                    <span class="image-type">Summer</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Summer</div>
+                <h3 class="content-title">From Osaka to Fukushima</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Message</div>
+                    <div class="japanese-text">
+                        浪江町　渡邊愛子 様<br><br>
+                        御元氣デイラッシャイマスカ。私ハ此方デ元氣ニ過ゴシテオリマス。毎日暑イ日ガ續キマスガ、御身體ニハクレグレモ御氣ヲツケ下サイ。<br><br>
+                        大阪府堺市　井上弘子
+                    </div>
+                    <div class="english-text">
+                        To: Miss Watanabe Aiko, Namie Town<br><br>
+                        "Are you doing well? I am spending my days in good health here. The hot days continue every day, so please take care of yourself."<br><br>
+                        From: Inoue Hiroko, Sakai City, Osaka
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> The recipient lives in Namie Town, Futaba District—the same area later evacuated after the 2011 nuclear disaster. This card captures ordinary correspondence from a now-transformed landscape.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 14 -->
+        <article class="postcard" data-index="13">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(13)">
+                    <span class="image-number">14 / 23</span>
+                    <img src="IMG_3940.JPG" alt="Autumn Letter">
+                    <span class="image-type">Autumn</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Early Autumn</div>
+                <h3 class="content-title">Saturday Evening Letter</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Letter</div>
+                    <div class="japanese-text">
+                        土曜ノ夜<br><br>
+                        早々ト御返事頂キ誠ニ有難ウ御座イマス。貴方様カラノ御便リヲ讀ミ大變嬉シク思ヒマシタ。<br><br>
+                        御依頼ノ件、承知致シマシタ。近イウチニ必ズ御届ケ致シマス。田舎ハ大分涼シクナッテマイリマシタ。<br><br>
+                        敬具
+                    </div>
+                    <div class="english-text">
+                        "Saturday Evening<br><br>
+                        Thank you very much for your prompt reply. I was very happy to read your letter.<br><br>
+                        Regarding your request, I understand. I will certainly deliver it soon. The countryside has become quite cool.<br><br>
+                        Respectfully yours"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> Written on a Saturday evening as autumn arrives. The writer's obvious pleasure at receiving a letter and promise to fulfill a request shows the reciprocal nature of these relationships.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 15 -->
+        <article class="postcard" data-index="14">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(14)">
+                    <span class="image-number">15 / 23</span>
+                    <img src="IMG_3946.JPG" alt="Book Return">
+                    <span class="image-type">Late Autumn</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Late Autumn</div>
+                <h3 class="content-title">Returning a Borrowed Book</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Letter</div>
+                    <div class="japanese-text">
+                        拝啓<br>
+                        晩秋ノ候、イカガ御過ゴシデショウカ。<br><br>
+                        此度ハ、長ラク御借リシテオリマシタ本ヲ御返シ致シマス。大變勉強ニナリマシタ。有難ウ御座イマシタ。<br><br>
+                        季節柄、御風邪ナド召サレマセヌヨウ御自愛下サイ。<br>
+                        敬具
+                    </div>
+                    <div class="english-text">
+                        "Dear Sir,<br><br>
+                        How are you in this late autumn season?<br><br>
+                        I am now returning the book I borrowed for so long. It was very educational. Thank you very much.<br><br>
+                        Please take care not to catch cold.<br>
+                        Respectfully yours"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> Before public libraries were common, lending books among acquaintances was an important form of cultural exchange. The writer's gratitude shows the social bonds strengthened by such sharing.
+                </div>
+            </div>
+        </article>
+
+        <!-- SECTION 4: Formal -->
+        <div class="section-header">
+            <span class="section-number">04</span>
+            <h2 class="section-title">Formal Correspondence</h2>
+            <span class="section-count">5 Letters</span>
+        </div>
+
+        <!-- Postcard 16 -->
+        <article class="postcard" data-index="15">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(15)">
+                    <span class="image-number">16 / 23</span>
+                    <img src="IMG_3943.JPG" alt="Thank You">
+                    <span class="image-type">Formal</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">Request for a Visit</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Letter</div>
+                    <div class="japanese-text">
+                        拝啓<br>
+                        過日ハ格別ノ御高配ヲ賜リ誠ニ有難ウ御座イマシタ。御蔭様デ無事ニ事ガ運ビマシタ。<br><br>
+                        改メテ御禮ヲ申上タク、近日中ニ御伺ヒ致シタイト存ジマスガ、御都合ノ宜シイ日時ヲ御知ラセ頂ケレバ幸甚ニ存ジマス。<br><br>
+                        敬具
+                    </div>
+                    <div class="english-text">
+                        "Dear Sir,<br><br>
+                        I sincerely thank you for your exceptional consideration the other day. Thanks to your kindness, the matter was concluded successfully.<br><br>
+                        I wish to express my gratitude properly in person and would like to visit in the near future. I would be grateful if you could inform me of a convenient time.<br><br>
+                        Respectfully yours"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> An exemplary formal thank-you letter. The writer wishes to express gratitude face-to-face—a gesture carrying greater social weight than written thanks alone.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 17 -->
+        <article class="postcard" data-index="16">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(16)">
+                    <span class="image-number">17 / 23</span>
+                    <img src="IMG_3935.JPG" alt="Matsui Letter">
+                    <span class="image-type">Business</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">Progress Report — Matsui</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Letter</div>
+                    <div class="japanese-text">
+                        拝啓<br>
+                        先般ヨリ御願ヒ致シテオリマシタ件ニ付キマシテ、色々ト御配慮頂キ有難ウ御座イマス。御蔭様ニテ順調ニ進ンデオリマス。<br><br>
+                        今後トモ宜シク御願申上候。<br><br>
+                        敬具　松井
+                    </div>
+                    <div class="english-text">
+                        "Dear Sir,<br><br>
+                        Regarding the matter I have been requesting your assistance with, thank you for your various considerations. Thanks to you, things are progressing smoothly.<br><br>
+                        I humbly request your continued support.<br><br>
+                        Respectfully, Matsui"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> Business correspondence signed "Matsui" with a red personal seal (inkan) for authentication—important for correspondence with legal or financial implications.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 18 -->
+        <article class="postcard" data-index="17">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(17)">
+                    <span class="image-number">18 / 23</span>
+                    <img src="IMG_3948.JPG" alt="Reply">
+                    <span class="image-type">Reply</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">Agreement to Proposal</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Letter</div>
+                    <div class="japanese-text">
+                        拝復<br>
+                        御手紙有難ウ御座イマシタ。<br><br>
+                        當方ト致シマシテハ、先方ノ御提案ニ同意致シテオリマス。具體的ナ日程等ヲ御相談サセテ頂ケレバト存ジマス。<br><br>
+                        取急ギ御返事マデ。<br>
+                        敬具
+                    </div>
+                    <div class="english-text">
+                        "In Reply,<br><br>
+                        Thank you for your letter.<br><br>
+                        On our part, we agree with the other party's proposal. I would like to discuss the specific schedule and details.<br><br>
+                        This is a hasty reply.<br>
+                        Respectfully yours"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> The opening "haifuku" marks this as a reply letter. The writer agrees to a proposal and wishes to arrange scheduling—perhaps for a meeting or transaction.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 19 -->
+        <article class="postcard" data-index="18">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(18)">
+                    <span class="image-number">19 / 23</span>
+                    <img src="IMG_3947.JPG" alt="Follow-up">
+                    <span class="image-type">Follow-up</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">Requesting a Response</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Letter</div>
+                    <div class="japanese-text">
+                        前略<br>
+                        先日ノ件、御検討頂ケマシタデショウカ。御忙シイトコロ恐縮デスガ、御返事頂ケレバ幸イニ存ジマス。<br><br>
+                        詳シイ内容ニ付キマシテハ、改メテ御會イシタ際ニ御説明サセテ頂キマス。<br>
+                        草々
+                    </div>
+                    <div class="english-text">
+                        "Dispensing with formalities,<br><br>
+                        Have you been able to consider the matter? I am sorry to trouble you when busy, but I would appreciate a reply.<br><br>
+                        I will explain the details when we meet.<br>
+                        Hastily yours"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> The informal "zenryaku...soso" indicates either familiarity or urgency that overrides normal politeness. The writer persistently but diplomatically requests a response.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 20 -->
+        <article class="postcard" data-index="19">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(19)">
+                    <span class="image-number">20 / 23</span>
+                    <img src="IMG_3955.JPG" alt="Final Follow-up">
+                    <span class="image-type">Follow-up</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">Awaiting Response</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Letter</div>
+                    <div class="japanese-text">
+                        前略<br>
+                        御無沙汰致シテオリマス。<br><br>
+                        先般御願イ致シマシタ件ニ付キマシテ、御回答頂ケレバ幸甚ニ存ジマス。御不明ナ點ガ御座イマシタラ御氣輕ニ御問合セ下サイ。<br>
+                        草々
+                    </div>
+                    <div class="english-text">
+                        "Dispensing with formalities,<br><br>
+                        I apologize for my silence.<br><br>
+                        Regarding my previous request, I would be grateful for an answer. If anything is unclear, please feel free to inquire.<br>
+                        Hastily yours"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> Patient but persistent—the writer offers to clarify questions, a diplomatic way to encourage a reply without seeming demanding.
+                </div>
+            </div>
+        </article>
+
+        <!-- SECTION 5: Personal -->
+        <div class="section-header">
+            <span class="section-number">05</span>
+            <h2 class="section-title">Personal Letters</h2>
+            <span class="section-count">3 Letters</span>
+        </div>
+
+        <!-- Postcard 21 -->
+        <article class="postcard" data-index="20">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(20)">
+                    <span class="image-number">21 / 23</span>
+                    <img src="IMG_3933.JPG" alt="Gunma Letter">
+                    <span class="image-type">Personal</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">To Gunma Prefecture</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Letter</div>
+                    <div class="japanese-text">
+                        群馬縣太田市　大橋義雄 様<br><br>
+                        拝啓<br>
+                        御無沙汰致シテオリマスガ、皆様ニハ御變リナク御過ゴシノコトト存ジマス。<br><br>
+                        先日ハ大變御世話ニナリ有難ウ御座イマシタ。季節ノ變リ目デスノデ御身體ヲ御大事ニシテ下サイ。又近イウチニ御會イ出來ルコトヲ樂シミニシテオリマス。<br>
+                        敬具
+                    </div>
+                    <div class="english-text">
+                        To: Mr. Ohashi Yoshio, Ota City, Gunma<br><br>
+                        "Dear Sir,<br><br>
+                        I apologize for my silence, but I trust everyone is well.<br><br>
+                        Thank you for your hospitality the other day. As we are at the change of seasons, please take care. I look forward to seeing you again soon.<br>
+                        Respectfully yours"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> A warm letter to Gunma Prefecture expressing gratitude for hospitality. Ota City was known for its aircraft manufacturing industry during this era.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 22 -->
+        <article class="postcard" data-index="21">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(21)">
+                    <span class="image-number">22 / 23</span>
+                    <img src="IMG_3938.JPG" alt="Farm Letter">
+                    <span class="image-type">Farm News</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">News from the Farm</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Letter</div>
+                    <div class="japanese-text">
+                        大橋 様<br><br>
+                        此方ノ様子ヲ御知ラセ致シマス。農作業モ順調ニ進ンデオリ、今年ノ収穫モ期待出來サウデス。田圃ノ稲モスクスクト育ッテオリマス。<br><br>
+                        又機會ガ御座イマシタラ御會イシタイト思ヒマス。<br>
+                        敬具
+                    </div>
+                    <div class="english-text">
+                        To: Mr. Ohashi<br><br>
+                        "I am writing to inform you of our situation. The farm work is progressing smoothly, and we can expect a good harvest this year. The rice in the paddies is growing vigorously.<br><br>
+                        If the opportunity arises, I would like to meet.<br>
+                        Respectfully yours"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> A rural correspondent sharing news about the farm. Rice farming was the backbone of rural Japan—harvest news carried both economic and emotional weight.
+                </div>
+            </div>
+        </article>
+
+        <!-- Postcard 23 -->
+        <article class="postcard" data-index="22">
+            <div class="postcard-image">
+                <div class="image-frame" onclick="openLightbox(22)">
+                    <span class="image-number">23 / 23</span>
+                    <img src="IMG_3942.JPG" alt="Apology Letter">
+                    <span class="image-type">Personal</span>
+                </div>
+            </div>
+            <div class="postcard-content">
+                <div class="content-era">Showa Era</div>
+                <h3 class="content-title">Apology for Silence</h3>
+                <div class="translation-block">
+                    <div class="translation-label">Letter</div>
+                    <div class="japanese-text">
+                        大橋 様<br><br>
+                        長ラク御無沙汰致シマシテ申譯御座イマセン。<br><br>
+                        當方モ一同無事ニ過ゴシテオリマス。最近ハ仕事モ忙シク、ナカナカ筆ヲ取ル暇ガ御座イマセンデシタ。御許シ下サイ。<br><br>
+                        次回御會イスル際ニハ、ユックリ御話シ出來レバト思ヒマス。<br>
+                        敬具
+                    </div>
+                    <div class="english-text">
+                        To: Mr. Ohashi<br><br>
+                        "I deeply apologize for my long silence.<br><br>
+                        All of us here are passing the days safely. Recently work has been busy, and I haven't had time to write. Please forgive me.<br><br>
+                        When we meet next, I hope we can talk at leisure.<br>
+                        Respectfully yours"
+                    </div>
+                </div>
+                <div class="context-note">
+                    <strong>Note:</strong> A heartfelt apology for delayed correspondence. The guilt and hope for future conversation reveals the emotional weight these letters carried. Before telephones, letters were the primary way to maintain distant relationships.
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <h3 class="footer-title">Japanese Postcard Collection</h3>
+                <p class="footer-subtitle">Historical documents from the Showa Era · Niigata, Gunma, Osaka, Fukushima · 1930s-1950s</p>
+            </div>
+            <div class="footer-kanji">手紙</div>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">CLOSE · ESC</button>
+            <button class="lightbox-nav lightbox-prev" onclick="navigateLightbox(-1); event.stopPropagation();">&#8592;</button>
+            <img id="lightbox-img" src="" alt="Enlarged postcard">
+            <button class="lightbox-nav lightbox-next" onclick="navigateLightbox(1); event.stopPropagation();">&#8594;</button>
+            <div class="lightbox-counter" id="lightbox-counter"></div>
+        </div>
+    </div>
+
+    <script>
+        const images = [
+            'IMG_3950.JPG', 'IMG_3939.JPG', 'IMG_3936.JPG', 'IMG_3945.JPG', 'IMG_3952.JPG',
+            'IMG_3937.JPG', 'IMG_3949.JPG', 'IMG_3951.JPG', 'IMG_3953.JPG',
+            'IMG_3934.JPG', 'IMG_3944.JPG', 'IMG_3941.JPG', 'IMG_3954.JPG', 'IMG_3940.JPG', 'IMG_3946.JPG',
+            'IMG_3943.JPG', 'IMG_3935.JPG', 'IMG_3948.JPG', 'IMG_3947.JPG', 'IMG_3955.JPG',
+            'IMG_3933.JPG', 'IMG_3938.JPG', 'IMG_3942.JPG'
+        ];
+
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightbox();
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function navigateLightbox(direction) {
+            currentIndex = (currentIndex + direction + images.length) % images.length;
+            updateLightbox();
+        }
+
+        function updateLightbox() {
+            document.getElementById('lightbox-img').src = images[currentIndex];
+            document.getElementById('lightbox-counter').textContent = `${currentIndex + 1} / ${images.length}`;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigateLightbox(-1);
+            if (e.key === 'ArrowRight') navigateLightbox(1);
+        });
+
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') closeLightbox();
+        });
+
+        // Scroll progress
+        function updateScrollProgress() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            document.getElementById('scrollProgress').style.width = progress + '%';
+        }
+
+        // Intersection Observer for reveals
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+        document.querySelectorAll('.postcard').forEach(card => observer.observe(card));
+
+        window.addEventListener('scroll', updateScrollProgress);
+        updateScrollProgress();
+    </script>
+</body>
+</html>
