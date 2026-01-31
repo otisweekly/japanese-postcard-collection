@@ -265,6 +265,74 @@
             pointer-events: none;
         }
 
+        /* Decorative floating kanji over hero */
+        .hero-floating-kanji {
+            position: absolute;
+            font-family: var(--font-jp);
+            color: white;
+            pointer-events: none;
+            opacity: 0;
+            animation: floatIn 1.5s var(--ease-out-expo) forwards;
+        }
+
+        .hero-floating-kanji.k1 {
+            top: 15%;
+            left: 10%;
+            font-size: clamp(3rem, 8vw, 6rem);
+            opacity: 0.06;
+            animation-delay: 0.8s;
+        }
+
+        .hero-floating-kanji.k2 {
+            top: 40%;
+            right: 15%;
+            font-size: clamp(2rem, 5vw, 4rem);
+            opacity: 0.04;
+            animation-delay: 1s;
+        }
+
+        .hero-floating-kanji.k3 {
+            bottom: 30%;
+            left: 20%;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            opacity: 0.05;
+            animation-delay: 1.2s;
+        }
+
+        .hero-floating-kanji.k4 {
+            top: 25%;
+            right: 30%;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            opacity: 0.03;
+            animation-delay: 1.4s;
+            writing-mode: vertical-rl;
+        }
+
+        .hero-floating-kanji.k5 {
+            bottom: 45%;
+            right: 8%;
+            font-size: clamp(2rem, 5vw, 4rem);
+            opacity: 0.05;
+            animation-delay: 1.1s;
+        }
+
+        @keyframes floatIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: var(--target-opacity, 0.05);
+                transform: translateY(0);
+            }
+        }
+
+        .hero-floating-kanji.k1 { --target-opacity: 0.06; }
+        .hero-floating-kanji.k2 { --target-opacity: 0.04; }
+        .hero-floating-kanji.k3 { --target-opacity: 0.05; }
+        .hero-floating-kanji.k4 { --target-opacity: 0.03; }
+        .hero-floating-kanji.k5 { --target-opacity: 0.05; }
+
         @keyframes revealUp {
             to {
                 opacity: 1;
@@ -316,15 +384,40 @@
             gap: var(--space-md);
             margin-bottom: var(--space-lg);
             padding-bottom: var(--space-sm);
-            border-bottom: 1px solid var(--color-mist);
+            border-bottom: none;
+            position: relative;
+            --section-accent: var(--color-vermillion);
+        }
+
+        .section-header::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 60%;
+            background: var(--section-accent);
+            border-radius: 2px;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--section-accent) 0%, transparent 70%);
+            opacity: 0.4;
         }
 
         .section-number {
             font-family: var(--font-display);
             font-size: 2.5rem;
             font-weight: 400;
-            color: var(--color-paper-aged);
-            -webkit-text-stroke: 1px var(--color-ink);
+            color: var(--section-accent);
+            opacity: 0.25;
         }
 
         .section-title {
@@ -338,7 +431,39 @@
             font-size: 0.6875rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--color-gold-dark);
+            color: var(--section-accent);
+            opacity: 0.7;
+        }
+
+        /* Section containers inherit accent color */
+        .postcard-section {
+            --section-accent: var(--color-vermillion);
+            margin-bottom: var(--space-xl);
+        }
+
+        .postcard-section .japanese-text {
+            border-left-color: var(--section-accent);
+        }
+
+        .postcard-section .postcard:nth-child(even) .japanese-text {
+            border-right-color: var(--section-accent);
+            border-left-color: transparent;
+        }
+
+        .postcard-section .image-type {
+            background: var(--section-accent);
+        }
+
+        .postcard-section .image-type.military {
+            background: var(--color-sage);
+        }
+
+        .postcard-section .context-note::before {
+            background: var(--section-accent);
+        }
+
+        .postcard-section .meta-block::before {
+            background: var(--section-accent);
         }
 
         /* Postcard Cards */
@@ -431,6 +556,36 @@
             height: auto;
             display: block;
             image-orientation: from-image;
+        }
+
+        /* Manual rotation fixes for specific postcards */
+        .image-frame img[src="IMG_3943.JPG"],
+        .image-frame img[src="IMG_3950.JPG"] {
+            transform: rotate(180deg);
+        }
+
+        /* Section accent colors - dynamically set via JS */
+        .section-header {
+            --section-accent: var(--color-vermillion);
+        }
+
+        .section-header .section-number {
+            -webkit-text-stroke-color: var(--section-accent);
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--section-accent), transparent);
+            opacity: 0.3;
+        }
+
+        .section-header {
+            position: relative;
         }
 
         .image-number {
@@ -839,6 +994,12 @@
                 <img src="IMG_3962.jpeg" alt="Vintage Japanese illustration" class="hero-image">
                 <div class="hero-image-overlay"></div>
             </div>
+            <!-- Floating decorative kanji -->
+            <span class="hero-floating-kanji k1">郵便</span>
+            <span class="hero-floating-kanji k2">昭和</span>
+            <span class="hero-floating-kanji k3">想</span>
+            <span class="hero-floating-kanji k4">心</span>
+            <span class="hero-floating-kanji k5">縁</span>
             <div class="hero-kanji">手紙</div>
         </div>
     </section>
@@ -846,6 +1007,7 @@
     <main class="main-content">
 
         <!-- SECTION 1: Military Correspondence -->
+        <section class="postcard-section" data-section="0">
         <div class="section-header">
             <span class="section-number">01</span>
             <h2 class="section-title">Military Correspondence</h2>
@@ -1032,7 +1194,10 @@
             </div>
         </article>
 
+        </section>
+
         <!-- SECTION 2: Niigata Family -->
+        <section class="postcard-section" data-section="1">
         <div class="section-header">
             <span class="section-number">02</span>
             <h2 class="section-title">Niigata Family Letters</h2>
@@ -1169,7 +1334,10 @@
             </div>
         </article>
 
+        </section>
+
         <!-- SECTION 3: Seasonal -->
+        <section class="postcard-section" data-section="2">
         <div class="section-header">
             <span class="section-number">03</span>
             <h2 class="section-title">Seasonal Greetings</h2>
@@ -1379,7 +1547,10 @@
             </div>
         </article>
 
+        </section>
+
         <!-- SECTION 4: Formal -->
+        <section class="postcard-section" data-section="3">
         <div class="section-header">
             <span class="section-number">04</span>
             <h2 class="section-title">Formal Correspondence</h2>
@@ -1553,7 +1724,10 @@
             </div>
         </article>
 
+        </section>
+
         <!-- SECTION 5: Personal -->
+        <section class="postcard-section" data-section="4">
         <div class="section-header">
             <span class="section-number">05</span>
             <h2 class="section-title">Personal Letters</h2>
@@ -1663,6 +1837,7 @@
             </div>
         </article>
 
+        </section>
     </main>
 
     <footer>
@@ -1751,6 +1926,82 @@
 
         window.addEventListener('scroll', updateScrollProgress);
         updateScrollProgress();
+
+        // Color extraction for section accents
+        function extractDominantColor(imgSrc, callback) {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const size = 50; // Sample size
+                canvas.width = size;
+                canvas.height = size;
+                ctx.drawImage(img, 0, 0, size, size);
+
+                const imageData = ctx.getImageData(0, 0, size, size).data;
+                let r = 0, g = 0, b = 0, count = 0;
+
+                // Sample pixels, skip very dark and very light
+                for (let i = 0; i < imageData.length; i += 16) { // Sample every 4th pixel
+                    const pr = imageData[i];
+                    const pg = imageData[i + 1];
+                    const pb = imageData[i + 2];
+                    const brightness = (pr + pg + pb) / 3;
+
+                    // Skip very dark or very light pixels
+                    if (brightness > 30 && brightness < 220) {
+                        r += pr;
+                        g += pg;
+                        b += pb;
+                        count++;
+                    }
+                }
+
+                if (count > 0) {
+                    r = Math.round(r / count);
+                    g = Math.round(g / count);
+                    b = Math.round(b / count);
+
+                    // Boost saturation slightly for more vibrant accents
+                    const max = Math.max(r, g, b);
+                    const min = Math.min(r, g, b);
+                    const sat = max > 0 ? (max - min) / max : 0;
+
+                    if (sat < 0.3) {
+                        // Desaturated - use a warm brown/sepia tone
+                        callback(`rgb(${Math.min(r + 40, 255)}, ${g}, ${Math.max(b - 20, 0)})`);
+                    } else {
+                        callback(`rgb(${r}, ${g}, ${b})`);
+                    }
+                } else {
+                    callback('var(--color-vermillion)');
+                }
+            };
+            img.onerror = function() {
+                callback('var(--color-vermillion)');
+            };
+            img.src = imgSrc;
+        }
+
+        // Map sections to their first postcard image
+        const sectionImages = {
+            0: 'IMG_3950.JPG', // Military Correspondence
+            1: 'IMG_3937.JPG', // Niigata Family
+            2: 'IMG_3934.JPG', // Seasonal Greetings
+            3: 'IMG_3943.JPG', // Formal Correspondence
+            4: 'IMG_3933.JPG'  // Personal Letters
+        };
+
+        // Apply colors to sections
+        document.querySelectorAll('.postcard-section').forEach((section) => {
+            const sectionIndex = parseInt(section.dataset.section);
+            if (sectionImages[sectionIndex]) {
+                extractDominantColor(sectionImages[sectionIndex], (color) => {
+                    section.style.setProperty('--section-accent', color);
+                });
+            }
+        });
     </script>
 </body>
 </html>
