@@ -11,24 +11,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
 
     <style>
-        /* PP Eiko - Display/Headlines */
+        /* PP Neue Montreal - Display/Headlines */
         @font-face {
-            font-family: 'PP Eiko';
-            src: url('fonts/PPEiko-Light.woff2') format('woff2');
+            font-family: 'PP Neue Montreal';
+            src: url('fonts/PPNeueMontreal-Light.woff2') format('woff2');
             font-weight: 300;
             font-style: normal;
             font-display: swap;
         }
         @font-face {
-            font-family: 'PP Eiko';
-            src: url('fonts/PPEiko-LightItalic.woff2') format('woff2');
-            font-weight: 300;
-            font-style: italic;
+            font-family: 'PP Neue Montreal';
+            src: url('fonts/PPNeueMontreal-Book.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
             font-display: swap;
         }
         @font-face {
-            font-family: 'PP Eiko';
-            src: url('fonts/PPEiko-Medium.woff2') format('woff2');
+            font-family: 'PP Neue Montreal';
+            src: url('fonts/PPNeueMontreal-Medium.woff2') format('woff2');
             font-weight: 500;
             font-style: normal;
             font-display: swap;
@@ -67,7 +67,7 @@
             --color-cream: #faf8f4;
             --color-accent: #c4501c;
 
-            --font-display: 'PP Eiko', Georgia, serif;
+            --font-display: 'PP Neue Montreal', -apple-system, sans-serif;
             --font-body: 'PP Mori', -apple-system, sans-serif;
             --font-jp: 'Noto Serif JP', 'Yu Mincho', serif;
 
@@ -140,22 +140,22 @@
 
         .nav-logo {
             color: white;
-            font-family: var(--font-jp);
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
             text-decoration: none;
         }
 
         .nav-counter {
             color: white;
             font-family: var(--font-body);
-            font-size: 0.6875rem;
-            letter-spacing: 0.2em;
+            font-size: 0.625rem;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            font-weight: 700;
-            padding: 0.5rem 1rem;
-            border: 2px solid white;
+            font-weight: 500;
+            padding: 0.4rem 0.75rem;
+            border: 1px solid rgba(255,255,255,0.5);
         }
 
         /* Hero Section - Bold editorial */
@@ -562,12 +562,11 @@
         }
 
         .english-text {
-            font-family: var(--font-display);
-            font-size: 1.0625rem;
-            font-style: italic;
-            line-height: 1.6;
+            font-family: var(--font-body);
+            font-size: 0.9375rem;
+            line-height: 1.7;
             color: var(--color-ink-soft);
-            font-weight: 300;
+            font-weight: 400;
         }
 
         .context-note {
