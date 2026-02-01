@@ -473,7 +473,7 @@
             order: 1;
         }
 
-        /* Solid color panel behind content */
+        /* Content panel - always readable, neutral */
         .postcard-content {
             position: relative;
             z-index: 2;
@@ -489,45 +489,11 @@
             max-width: 540px;
         }
 
-        .postcard:nth-child(odd) .postcard-content {
-            background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-paper) 100%);
-        }
-
         .postcard:nth-child(even) .postcard-content {
-            background: var(--card-color);
-            color: white;
+            background: var(--color-paper);
         }
 
-        .postcard:nth-child(even) .content-era,
-        .postcard:nth-child(even) .translation-label {
-            color: rgba(255,255,255,0.7);
-        }
-
-        .postcard:nth-child(even) .content-title {
-            color: white;
-        }
-
-        .postcard:nth-child(even) .japanese-text {
-            background: rgba(0,0,0,0.15);
-            border-left-color: rgba(255,255,255,0.4);
-            color: white;
-        }
-
-        .postcard:nth-child(even) .english-text {
-            color: rgba(255,255,255,0.9);
-            border-left-color: rgba(255,255,255,0.2);
-        }
-
-        .postcard:nth-child(even) .context-note {
-            background: rgba(0,0,0,0.15);
-            color: rgba(255,255,255,0.9);
-        }
-
-        .postcard:nth-child(even) .context-note strong {
-            color: white;
-        }
-
-        /* Image Container - Editorial style */
+        /* Image Container - subtle tinted backgrounds */
         .postcard-image {
             position: relative;
             z-index: 2;
@@ -535,31 +501,34 @@
             align-items: center;
             justify-content: center;
             padding: var(--space-lg);
-            background: var(--card-color);
+            background: var(--color-paper-aged);
         }
 
         .postcard:nth-child(even) .postcard-image {
             background: var(--color-cream);
         }
 
+        .postcard:nth-child(3n) .postcard-image {
+            background: #e5ddd0;
+        }
+
+        .postcard:nth-child(4n) .postcard-image {
+            background: #ddd8cd;
+        }
+
         .image-frame {
             position: relative;
-            background: var(--color-cream);
+            background: white;
             padding: 0.75rem;
             max-width: 85%;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.12);
             cursor: pointer;
             transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
         }
 
-        .postcard:nth-child(even) .image-frame {
-            background: white;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
-        }
-
         .image-frame:hover {
             transform: translateY(-4px);
-            box-shadow: 0 16px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.18);
         }
 
         .image-frame img {
@@ -585,37 +554,27 @@
             background: var(--color-ink);
             color: var(--color-cream);
             padding: 0.5rem 1rem;
-            font-family: var(--font-jp);
-            font-size: 0.875rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-        }
-
-        .postcard:nth-child(even) .image-number {
-            background: white;
-            color: var(--card-color);
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
         }
 
         .image-type {
             position: absolute;
             bottom: -1rem;
             right: 0;
-            background: var(--color-ink);
-            color: var(--color-cream);
-            padding: 0.5rem 1.25rem;
-            font-size: 0.6875rem;
+            background: var(--card-color);
+            color: white;
+            padding: 0.4rem 1rem;
+            font-size: 0.625rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        .postcard:nth-child(even) .image-type {
-            background: white;
-            color: var(--card-color);
+            font-weight: 600;
         }
 
         .image-type.military {
-            background: var(--color-ink);
+            background: var(--color-vermillion);
         }
 
         .content-era {
@@ -654,8 +613,8 @@
             font-size: 1.0625rem;
             line-height: 2.2;
             padding: 1.5rem 1.75rem;
-            background: rgba(0,0,0,0.03);
-            border-left: 3px solid var(--card-color);
+            background: var(--color-paper);
+            border-left: 3px solid var(--color-vermillion);
             margin-bottom: 1.5rem;
             border-radius: 0 4px 4px 0;
         }
