@@ -330,21 +330,23 @@
             }
         }
 
-        /* Scroll indicator */
+        /* Scroll indicator - positioned in hero section */
         .scroll-indicator {
             position: absolute;
             bottom: var(--space-md);
-            left: var(--space-lg);
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             align-items: center;
-            gap: 1rem;
-            font-size: 0.6875rem;
-            letter-spacing: 0.2em;
+            gap: 0.75rem;
+            font-size: 0.625rem;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--color-ink);
-            font-weight: 700;
+            color: var(--color-ink-light);
+            font-weight: 500;
             opacity: 0;
             animation: revealUp 1s var(--ease-out-expo) forwards 1.2s;
+            z-index: 10;
         }
 
         .scroll-line {
@@ -802,6 +804,17 @@
 
             .hero-visual {
                 height: 50vh;
+                min-height: 300px;
+            }
+
+            .hero-image-container {
+                inset: 0;
+            }
+
+            .hero-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
 
             .hero-kanji {
@@ -902,10 +915,6 @@
                     <div class="meta-value">Niigata Prefecture</div>
                 </div>
             </div>
-            <div class="scroll-indicator">
-                <span class="scroll-line"></span>
-                <span>Scroll to explore</span>
-            </div>
         </div>
         <div class="hero-visual">
             <div class="hero-image-container">
@@ -917,9 +926,12 @@
             <div class="hero-kanji">郵便葉書</div>
             <div class="hero-hanko"><span>手紙</span></div>
         </div>
+        <div class="scroll-indicator">
+            <span class="scroll-line"></span>
+            <span>Scroll to explore</span>
+        </div>
     </section>
 
-    <main class="main-content">
     <main class="main-content">
 
         <!-- Postcard 1: IMG_3933 -->
